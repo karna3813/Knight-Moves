@@ -1,0 +1,125 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <title>knight Assignment Raftlabs</title>
+</head>
+<style>
+    body {
+        text-align: center;
+    }
+    
+    .cell {
+        height: 50px;
+        width: 50px;
+        border: 1.5px solid grey;
+        border-style: inset;
+    }
+    
+    .blackcell {
+        background-color: brown;
+    }
+    
+    .whitecell {
+        background-color: white;
+    }
+    
+    button {
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        padding: 12px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <span style="color: red; font-size: 30px"> Knight Assignment </span>
+    <br /><br />
+    <button onclick="reset()">Reset Board</button>
+    <br /><br />
+
+    <script type="text/javascript">
+        var center = document.createElement("center");
+
+        var ChessTable = document.createElement("table");
+        for (var i = 0; i < 8; i++) {
+            var tr = document.createElement("tr");
+            for (var j = 0; j < 8; j++) {
+                var td = document.createElement("td");
+
+                if ((i + j) % 2 == 0) {
+                    td.setAttribute("class", "cell whitecell");
+                    tr.appendChild(td);
+                } else {
+                    td.setAttribute("class", "cell blackcell");
+
+                    tr.appendChild(td);
+                }
+            }
+
+            ChessTable.appendChild(tr);
+        }
+        center.appendChild(ChessTable);
+
+        ChessTable.setAttribute("cellspacing", "0");
+        ChessTable.setAttribute("width", "400px");
+        document.body.appendChild(center);
+
+        var table = document.getElementsByTagName("table")[0];
+        var cells = table.getElementsByTagName("td");
+
+        const solve = (x, y) => {
+
+            if (x < 0 || y < 0 || x >= 8 || y >= 8) return [];
+            var dx = [2, 2, -2, -2, 1, 1, -1, -1];
+            var dy = [1, -1, 1, -1, 2, -2, 2, -2];
+            var ans = [];
+            for (var i = 0; i < 8; i++) {
+                var nx = x + dx[i];
+                var ny = y + dy[i];
+                if (nx < 0 || ny < 0 || nx >= 8 || ny >= 8) continue;
+                ans.push([nx, ny]);
+            }
+            return ans;
+        };
+
+        for (var i = 1; i < cells.length; i++) {
+            var cell = cells[i];
+
+            cell.onclick = function() {
+                var columnIndex = this.cellIndex + 1;
+
+                var rowIndex = this.parentNode.rowIndex + 1;
+
+                var ans = solve(rowIndex - 1, columnIndex - 1);
+
+                for (var i = 0; i < ans.length; i++) {
+                    var x = ans[i][0];
+                    var y = ans[i][1];
+                    var cell = cells[x * 8 + y];
+                    cell.style.backgroundColor = "blue";
+                }
+            };
+        }
+
+        function reset() {
+            window.location.reload();
+        }
+    </script>
+
+</body>
+<footer>
+    Made with <i class="icon ion-heart" style="color: #e25555; margin-top:25px;"></i> By Pawananjani Kumar
+</footer>
+
+</html>
